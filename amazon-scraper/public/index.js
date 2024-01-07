@@ -20,12 +20,13 @@ async function Search(){
         }
     }
 
-    console.log(queryParamString);
+    console.log('queryParamString , ' , queryParamString);
 
     const res = await fetch(`http://localhost:3000/getAmazonData` , { headers : {
         "queryParamString" : queryParamString,
         "categoryField" : categoryField 
-    }});
+    }
+    });
     const Data = await res.json();
     console.log(Data.arr);
 

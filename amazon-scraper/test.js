@@ -1,24 +1,48 @@
-const sentence = ' <img src="sdfsdfs" adfsfsfdfsdfsdfsdfdfsdfsdfdfdfsdfdfsdfsdfdsfsdfsdfsfsdfdfsdfdfsdf /></div> <img src="sdfsdfs" dfsdf /></div> <img src="sdfsdfs" adfsfsfdfsdfsdfsdfdfsdfsdfdfdfsdfdfsdfsdfdsfsdfsdfsfsdfdfsdfdfsdf /></div> '
+// const sentence = ' <img src="sdfsdfs" adfsfsfdfsdfsdfsdfdfsdfsdfdfdfsdfdfsdfsdfdsfsdfsdfsfsdfdfsdfdfsdf /></div> <img src="sdfsdfs" dfsdf /></div> <img src="sdfsdfs" adfsfsfdfsdfsdfsdfdfsdfsdfdfdfsdfdfsdfsdfdsfsdfsdfsfsdfdfsdfdfsdf /></div> '
 
-const regEx = /<img src="sdfsdfs".*?\/>/g
+// const regEx = /<img src="sdfsdfs".*?\/>/g
 
-const match = regEx.exec(sentence);
-console.log(match[0]);
+// const match = regEx.exec(sentence);
+// console.log(match[0]);
 
 
-const queryString = queryParamSplit.reduce(( elem , c) => elem + c + ".?", ""  );
 
-try{
-    console.log('this is queryParamstring : ', queryParamString , 'this is category: ' ,  category);
-    const url = `https://amazon.com/s?k=${queryParamString}+${category}`
-    console.log(url);
-    data =  await axios.get( url , {"mode" : 'no-cors'});
+
+// const request = require('superagent');
+
+// const res = axios.get(`https://d3ag4hukkh62yn.cloudfront.net/s?k=asus+rog` , {"mode" :"no-cors"})
+
+
+// res.then((data) => {
+//     console.log(data);
+// })
+
+
+// // const cheerio
+
+fetch('https://www.amazon.com/s?k=asus+rog', {
+    headers : {
+        'User-Agent' : 'Thunder Client (https://www.thunderclient.com)'
+    }
+})
+
+.then((res) => {
+console.log(res.status)
+res.text()
+.then((data) => {
     console.log(data);
-    
-    // console.log(data.data);
-    reg = new RegExp(`<img class="s-image".+?alt="[^"]*${queryString}${category}[^"]*".*?data-image-source-density="1"\/>` , 'gi')
-    
-    console.log('got here');
-}catch(err){
-    console.log(err);
-}
+})}
+)
+
+// // Import the 'request-promise' library
+// const rp = require('request-promise');
+
+// // Define options for the request, including the API endpoint URL, query parameters, and expected response type
+// const options = {
+//   uri: 'https://www.amazon.com/s?k=asus+rog',
+//   mode : 'no-cors'
+// };
+
+// // Make an HTTP GET request to the API endpoint with the specified options
+// const data = rp(options);
+// console.log(data);

@@ -15,6 +15,9 @@ app.get('/getAmazonData' , (req ,res) => {
     const category = req.headers.categoryfield;
     const queryParamSplit = queryParamString.split('+');
 
+    const queryString = queryParamSplit.reduce(( elem , c) => elem + c + ".+?", ""  );
+
+
     console.log("this is query param string : " ,  queryParamString);
     console.log(queryParamSplit);
     // const queryString = map.reduce(( elem , c) => elem +  )
@@ -26,18 +29,48 @@ app.get('/getAmazonData' , (req ,res) => {
 
         let data , reg;
         if(queryParamString.length != 0 && category.length != 0){
-    
-            data =  await axios.get(`https://www.amazon.com/s?k=${queryParamString}+${category}&crid=3O5BHDGM7ZS1W&sprefix=yonex+racket%2Caps%2C1093&ref=nb_sb_noss_1` , {"mode" : 'no-cors'});
-            reg = new RegExp(`<img class="s-image".+?alt=".+?${queryParamSplit[0]}.+?${category}.+?data-image-source-density="1"\/>` , 'gi')
+            
+            // data =  await axios.get(`https://amazon.com/s?k=${queryParamString}+${category}&crid=3O5BHDGM7ZS1W&sprefix=yonex+racket%2Caps%2C1093&ref=nb_sb_noss_1` , 
+            // reg = new RegExp(`<img class="s-image".+?alt=".+?${queryParamSplit[0]}.+?${category}.+?data-image-source-density="1"\/>` , 'gi')
+
+
+            try{
+                console.log('this is queryParamstring : ', queryParamString , 'this is category: ' ,  category);
+                const url = `https://amazon.com/s?k=${queryParamString}+${category}`
+                console.log(url);
+                data =  await axios.get( url ,{
+                        headers : {
+                            'User-Agent' : 'Thunder Client (https://www.thunderclient.com)'
+                        }});
+
+                console.log(data);
+                
+                // console.log(data.data);
+                reg = new RegExp(`<img class="s-image".+?alt="[^"]*${queryString}${category}[^"]*".*?data-image-source-density="1"\/>` , 'gi')
+                
+                console.log('got here');
+            }catch(err){
+                console.log(err);
+            }
+
+
 
         }else if(category.length == 0){
 
-             data =  await axios.get(`https://www.amazon.com/s?k=${queryParamString}` , {"mode" : 'no-cors'});
+             data =  await axios.get(`https://www.amazon.com/s?k=${queryParamString}` , {
+                headers : {
+                    'User-Agent' : 'Thunder Client (https://www.thunderclient.com)'
+                }
+             });
              reg = new RegExp(`<img class="s-image".+?alt=".+?${queryParamSplit[0]}.+?data-image-source-density="1"\/>` , 'gi');
 
         }else{
 
-            data =  await axios.get(`https://www.amazon.com/s?k=${category}` , {"mode" : 'no-cors'});
+            data =  await axios.get(`https://www.amazon.com/s?k=${category}` , {
+                headers : {
+                    'User-Agent' : 'Thunder Client (https://www.thunderclient.com)'
+                }
+            });
             reg = new RegExp(`<img class="s-image".+?alt=".+?${category}.+?data-image-source-density="1"\/>` , 'gi');
 
         }
